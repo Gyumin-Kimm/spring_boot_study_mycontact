@@ -15,15 +15,15 @@ import java.time.LocalDate;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@RequiredArgsConstructor
-@Data
+@Data // @Getter @Setter @RequiredArgsConstructor @ToString @EqualsAndHashCode
+@Builder
 @Where(clause = "deleted = false")
 public class Person {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NonNull
+    @NonNull // @RequiredConstructor
     @NotEmpty
     @Column(nullable = false)
     private String name;
@@ -38,6 +38,7 @@ public class Person {
 
     private String job;
 
+//    @ToString.Exclude 클래스 상단에 표시도 가능하지만, 오타 위험이 있음
     private String phoneNumber;
 
     @ColumnDefault("0")
@@ -45,7 +46,7 @@ public class Person {
 
     public void set(PersonDto personDto) {
 
-        if (!StringUtils.isEmpty(personDto.getHobby())) {
+        if (!StringUtils.hasLength(personDto.getHobby())) {
             this.setHobby(personDto.getHobby());
         }
 

@@ -8,7 +8,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import javax.transaction.Transactional;
 import java.util.List;
 
-@Transactional
+import static org.assertj.core.api.Assertions.*;
+
 @SpringBootTest
 class PersonRepositoryTest {
 
@@ -16,19 +17,24 @@ class PersonRepositoryTest {
     private PersonRepository personRepository;
 
     @Test
+    @Transactional
     void crud() {
-        Person person = new Person();
-        person.setName("john");
+        Person person = Person.builder()
+                .name("kyu")
+                .hobby("soccer")
+                .build();
 
         personRepository.save(person);
 
-        List<Person> result = personRepository.findByName("john");
+        List<Person> people = personRepository.findAll();
 
-        System.out.println(result.size());
-        System.out.println(result.get(0).getName());
+        assertThat(people.size()).isEqualTo(1);
+        assertThat(people.get(0).getName()).isEqualTo("kyu");
+        assertThat(people.get(0).getHobby()).isEqualTo("soccer");
     }
 
     @Test
+    @Transactional
     void findByBirthdayBetween() {
         List<Person> result = personRepository.findByMonthOfBirthday(8);
 
