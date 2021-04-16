@@ -26,11 +26,11 @@ class PersonRepositoryTest {
 
         personRepository.save(person);
 
-        List<Person> people = personRepository.findAll();
+        List<Person> result = personRepository.findAll();
 
-        assertThat(people.size()).isEqualTo(1);
-        assertThat(people.get(0).getName()).isEqualTo("kyu");
-        assertThat(people.get(0).getHobby()).isEqualTo("soccer");
+//        assertThat(result.size()).isEqualTo(1);
+        assertThat(result.get(0).getName()).isEqualTo("kyu");
+        assertThat(result.get(0).getHobby()).isEqualTo("soccer");
     }
 
     @Test
@@ -38,8 +38,8 @@ class PersonRepositoryTest {
     void findByBirthdayBetween() {
         List<Person> result = personRepository.findByMonthOfBirthday(8);
 
-        System.out.println(result.size());
-        System.out.println(result.get(0).getName());
-        System.out.println(result.get(1).getName());
+        result.forEach(System.out::println);
+
+        assertThat(result.size()).isEqualTo(2);
     }
 }

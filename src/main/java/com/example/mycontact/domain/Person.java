@@ -32,7 +32,7 @@ public class Person {
 
     private String address;
 
-    @Valid
+    @Valid // @Min, @Max check
     @Embedded
     private Birthday birthday;
 

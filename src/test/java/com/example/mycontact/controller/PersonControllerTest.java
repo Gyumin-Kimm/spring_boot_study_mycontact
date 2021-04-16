@@ -20,6 +20,8 @@ import org.springframework.web.util.NestedServletException;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
 
+import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -72,6 +74,7 @@ class PersonControllerTest {
     }
 
     @Test
+    @Transactional
     void modifyPerson() throws Exception {
         PersonDto dto = PersonDto.of("kyu", "programming", "판교", LocalDate.now(), "programmer", "010-1111-2222");
 
@@ -84,9 +87,9 @@ class PersonControllerTest {
 
         Person result = personRepository.findById(1L).get();
 
-        Assertions.assertAll(
-                () -> org.assertj.core.api.Assertions.assertThat(result.getName()).isEqualTo("kyu"),
-                () -> org.assertj.core.api.Assertions.assertThat(result.getHobby()).isEqualTo("programming")
+        assertAll(
+                () -> assertThat(result.getName()).isEqualTo("kyu"),
+                () -> assertThat(result.getHobby()).isEqualTo("programming")
         );
     }
 
@@ -94,7 +97,7 @@ class PersonControllerTest {
     void modifyPersonIfNameIsDifferent() throws Exception {
         PersonDto dto = PersonDto.of("james", "programming", "판교", LocalDate.now(), "programmer", "010-1111-2222");
 
-        Assertions.assertThrows(NestedServletException.class, () ->
+        assertThrows(NestedServletException.class, () ->
                 mockMvc.perform(
                         MockMvcRequestBuilders.put("/api/person/1")
                                 .contentType(MediaType.APPLICATION_JSON_UTF8)
@@ -111,7 +114,7 @@ class PersonControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk());
 
-        org.assertj.core.api.Assertions.assertThat(personRepository.findById(1L).get().getName()).isEqualTo("kyuModified");
+        assertThat(personRepository.findById(1L).get().getName()).isEqualTo("kyuModified");
     }
 
     @Test
