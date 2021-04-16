@@ -13,6 +13,7 @@ import java.util.List;
 @Service
 @Slf4j
 public class PersonService {
+
     @Autowired
     private PersonRepository personRepository;
 
@@ -22,7 +23,8 @@ public class PersonService {
 
     @Transactional
     public Person getPerson(Long id) {
-        Person person = personRepository.findById(id).orElse(null);
+        Person person = personRepository.findById(id)
+                .orElse(null);
 
         log.info("person : {}", person);
 

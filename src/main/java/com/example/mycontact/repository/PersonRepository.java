@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
+// @Repository  JpagRepository 상속받은 경우에는 자동
 public interface PersonRepository extends JpaRepository<Person, Long> {
     List<Person> findByName(String name);
 
