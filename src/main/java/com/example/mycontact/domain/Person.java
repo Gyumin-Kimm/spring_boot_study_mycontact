@@ -50,15 +50,15 @@ public class Person {
             this.setHobby(personDto.getHobby());
         }
 
-        if (!StringUtils.isEmpty(personDto.getAddress())) {
+        if (!StringUtils.hasLength(personDto.getAddress())) {
             this.setAddress(personDto.getAddress());
         }
 
-        if (!StringUtils.isEmpty(personDto.getJob())) {
+        if (!StringUtils.hasLength(personDto.getJob())) {
             this.setJob(personDto.getJob());
         }
 
-        if (!StringUtils.isEmpty(personDto.getPhoneNumber())) {
+        if (!StringUtils.hasLength(personDto.getPhoneNumber())) {
             this.setPhoneNumber(personDto.getPhoneNumber());
         }
 
