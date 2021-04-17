@@ -17,7 +17,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Data // @Getter @Setter @RequiredArgsConstructor @ToString @EqualsAndHashCode
 @Builder
-@Where(clause = "deleted = false")
+@Where(clause = "deleted = false") // 쿼리사용시 항상 적용되는 조건
 public class Person {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,24 +41,24 @@ public class Person {
 //    @ToString.Exclude 클래스 상단에 표시도 가능하지만, 오타 위험이 있음
     private String phoneNumber;
 
-    @ColumnDefault("0")
+    @ColumnDefault("0") // 0 = false
     private boolean deleted;
 
     public void set(PersonDto personDto) {
 
-        if (!StringUtils.hasLength(personDto.getHobby())) {
+        if (StringUtils.hasLength(personDto.getHobby())) {
             this.setHobby(personDto.getHobby());
         }
 
-        if (!StringUtils.isEmpty(personDto.getAddress())) {
+        if (StringUtils.hasLength(personDto.getAddress())) {
             this.setAddress(personDto.getAddress());
         }
 
-        if (!StringUtils.isEmpty(personDto.getJob())) {
+        if (StringUtils.hasLength(personDto.getJob())) {
             this.setJob(personDto.getJob());
         }
 
-        if (!StringUtils.isEmpty(personDto.getPhoneNumber())) {
+        if (StringUtils.hasLength(personDto.getPhoneNumber())) {
             this.setPhoneNumber(personDto.getPhoneNumber());
         }
 

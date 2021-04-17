@@ -6,7 +6,6 @@ import com.example.mycontact.repository.PersonRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +19,7 @@ import org.springframework.web.util.NestedServletException;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -28,23 +27,26 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @Slf4j
 @SpringBootTest
-@Transactional
 class PersonControllerTest {
+
     @Autowired
     private PersonController personController;
+
     @Autowired
     private PersonRepository personRepository;
+
     @Autowired
     private ObjectMapper objectMapper;
 
     private MockMvc mockMvc;
 
-    @BeforeEach
+    @BeforeEach // 매 테스트마다 실행
     void beforeEach() {
         mockMvc = MockMvcBuilders.standaloneSetup(personController).build();
     }
 
     @Test
+    @Transactional
     void getPerson() throws Exception {
         mockMvc.perform(
                 MockMvcRequestBuilders.get("/api/person/1"))
@@ -53,17 +55,18 @@ class PersonControllerTest {
                 .andExpect(jsonPath("$.name").value("kyu"))
                 .andExpect(jsonPath("hobby").isEmpty())
                 .andExpect(jsonPath("address").isEmpty())
-                .andExpect(jsonPath("$.birthday.yearOfBirthday").value("1991-08-15"))
+                .andExpect(jsonPath("$.birthday.yearOfBirthday").value("1991"))
                 .andExpect(jsonPath("$.job").isEmpty())
-                .andExpect(jsonPath("$phoneNumber").isEmpty())
+                .andExpect(jsonPath("$.phoneNumber").isEmpty())
         ;
     }
 
     @Test
+    @Transactional
     void postPerson() throws Exception {
         mockMvc.perform(
                 MockMvcRequestBuilders.post("/api/person")
-                        .contentType(MediaType.APPLICATION_JSON_UTF8)
+                        .contentType(MediaType.APPLICATION_JSON)
                         .content("{\n" +
                                 "    \"name\": \"kyu2\",\n" +
                                 "    \"age\": 20,\n" +
@@ -94,6 +97,7 @@ class PersonControllerTest {
     }
 
     @Test
+    @Transactional
     void modifyPersonIfNameIsDifferent() throws Exception {
         PersonDto dto = PersonDto.of("james", "programming", "판교", LocalDate.now(), "programmer", "010-1111-2222");
 
@@ -107,6 +111,7 @@ class PersonControllerTest {
     }
 
     @Test
+    @Transactional
     void modifyName() throws Exception {
         mockMvc.perform(
                 MockMvcRequestBuilders.patch("/api/person/1")
@@ -118,13 +123,14 @@ class PersonControllerTest {
     }
 
     @Test
+    @Transactional
     void deletePerson() throws Exception {
         mockMvc.perform(
                 MockMvcRequestBuilders.delete("/api/person/1"))
                 .andDo(print())
                 .andExpect(status().isOk());
 
-        Assertions.assertTrue(personRepository.findPeopleDeleted().stream().anyMatch(person -> person.getId().equals(1L)));
+        assertTrue(personRepository.findPeopleDeleted().stream().anyMatch(person -> person.getId().equals(1L)));
     }
 
     private String toJsonString(PersonDto personDto) throws JsonProcessingException {

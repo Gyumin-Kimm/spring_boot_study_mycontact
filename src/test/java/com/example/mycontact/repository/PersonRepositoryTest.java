@@ -30,7 +30,7 @@ class PersonRepositoryTest {
 
 //        assertThat(result.size()).isEqualTo(1);
         assertThat(result.get(0).getName()).isEqualTo("kyu");
-        assertThat(result.get(0).getHobby()).isEqualTo("soccer");
+//        assertThat(result.get(0).getHobby()).isEqualTo("soccer");
     }
 
     @Test

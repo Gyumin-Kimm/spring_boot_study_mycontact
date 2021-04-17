@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @Slf4j
 public class PersonController {
+
     @Autowired
     private PersonService personService;
     @Autowired
@@ -24,7 +25,7 @@ public class PersonController {
     }
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(HttpStatus.CREATED) // 응답코드 제어
     public void postPerson(@RequestBody Person person) {
         personService.put(person);
     }
@@ -34,7 +35,8 @@ public class PersonController {
         personService.modify(id, personDto);
     }
 
-    @PatchMapping("/{id}")
+    // 이름을 바꿀 경우
+    @PatchMapping("/{id}") // 일부 리소스만 변경할 때 사용
     public void modifyPerson(@PathVariable Long id, String name) {
         personService.modify(id, name);
     }
