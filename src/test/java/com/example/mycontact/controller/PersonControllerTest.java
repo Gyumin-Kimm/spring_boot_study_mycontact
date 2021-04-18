@@ -83,7 +83,7 @@ class PersonControllerTest {
 
         mockMvc.perform(
                 MockMvcRequestBuilders.put("/api/person/1")
-                        .contentType(MediaType.APPLICATION_JSON_UTF8)
+                        .contentType(MediaType.APPLICATION_JSON)
                         .content(toJsonString(dto)))
                 .andDo(print())
                 .andExpect(status().isOk());
