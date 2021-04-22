@@ -6,8 +6,6 @@ import lombok.NoArgsConstructor;
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Embeddable;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 import java.time.LocalDate;
 
 @Embeddable
@@ -18,8 +16,6 @@ public class Birthday {
 
     private Integer yearOfBirthday;
 
-    @Min(1)
-    @Max(12)
     private Integer monthOfBirthday;
 
     private Integer dayOfBirthday;

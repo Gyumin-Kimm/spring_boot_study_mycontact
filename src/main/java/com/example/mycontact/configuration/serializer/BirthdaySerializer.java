@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 
 public class BirthdaySerializer extends JsonSerializer<Birthday> {
+
     @Override
     public void serialize(Birthday value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
         if (value != null) {

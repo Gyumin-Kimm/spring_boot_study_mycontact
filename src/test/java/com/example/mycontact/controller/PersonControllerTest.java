@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -38,11 +39,14 @@ class PersonControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
+    @Autowired
+    private MappingJackson2HttpMessageConverter messageConverter;
+
     private MockMvc mockMvc;
 
     @BeforeEach // 매 테스트마다 실행
     void beforeEach() {
-        mockMvc = MockMvcBuilders.standaloneSetup(personController).build();
+        mockMvc = MockMvcBuilders.standaloneSetup(personController).setMessageConverters(messageConverter).build();
     }
 
     @Test
@@ -55,9 +59,12 @@ class PersonControllerTest {
                 .andExpect(jsonPath("$.name").value("kyu"))
                 .andExpect(jsonPath("hobby").isEmpty())
                 .andExpect(jsonPath("address").isEmpty())
-                .andExpect(jsonPath("$.birthday.yearOfBirthday").value("1991"))
+//                .andExpect(jsonPath("$.birthday.yearOfBirthday").value("1991"))
+                .andExpect(jsonPath("$.birthday").value("1991-08-15")) // serialization
                 .andExpect(jsonPath("$.job").isEmpty())
                 .andExpect(jsonPath("$.phoneNumber").isEmpty())
+                .andExpect(jsonPath("$.age").isNumber())
+                .andExpect(jsonPath("$.birthdayToday").isBoolean())
         ;
     }
 
@@ -79,6 +86,8 @@ class PersonControllerTest {
     @Test
     @Transactional
     void modifyPerson() throws Exception {
+
+        // @AllArgsConstructor(staticName = "of")
         PersonDto dto = PersonDto.of("kyu", "programming", "판교", LocalDate.now(), "programmer", "010-1111-2222");
 
         mockMvc.perform(
@@ -99,6 +108,7 @@ class PersonControllerTest {
     @Test
     @Transactional
     void modifyPersonIfNameIsDifferent() throws Exception {
+
         PersonDto dto = PersonDto.of("james", "programming", "판교", LocalDate.now(), "programmer", "010-1111-2222");
 
         assertThrows(NestedServletException.class, () ->
@@ -133,6 +143,7 @@ class PersonControllerTest {
         assertTrue(personRepository.findPeopleDeleted().stream().anyMatch(person -> person.getId().equals(1L)));
     }
 
+    // json type String
     private String toJsonString(PersonDto personDto) throws JsonProcessingException {
         return objectMapper.writeValueAsString(personDto);
     }
