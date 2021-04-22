@@ -44,6 +44,10 @@ public class Person {
     @ColumnDefault("0") // 0 = false
     private boolean deleted;
 
+    public Person(String name) {
+        this.name = name;
+    }
+
     public void set(PersonDto personDto) {
 
         if (StringUtils.hasLength(personDto.getHobby())) {
