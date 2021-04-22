@@ -26,8 +26,8 @@ public class PersonController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED) // 응답코드 제어
-    public void postPerson(@RequestBody Person person) {
-        personService.put(person);
+    public void postPerson(@RequestBody PersonDto personDto) {
+        personService.put(personDto);
     }
 
     @PutMapping("/{id}")
