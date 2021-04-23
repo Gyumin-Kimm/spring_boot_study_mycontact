@@ -1,5 +1,6 @@
 package com.example.mycontact.service;
 
+import com.example.mycontact.controller.dto.PersonDto;
 import com.example.mycontact.domain.Person;
 import com.example.mycontact.repository.PersonRepository;
 import org.assertj.core.util.Lists;
@@ -9,10 +10,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class PersonServiceTest {
@@ -32,5 +36,34 @@ class PersonServiceTest {
 
         assertThat(result.size()).isEqualTo(1);
         assertThat(result.get(0).getName()).isEqualTo("kyu");
+    }
+
+    @Test
+    void getPerson(){
+        when(personRepository.findById(1L))
+                .thenReturn(Optional.of(new Person("kyu")));
+
+        Person person = personService.getPerson(1L);
+
+        assertThat(person.getName()).isEqualTo("kyu");
+    }
+
+    @Test
+    void getPersonIfNotFound(){
+        when(personRepository.findById(1L))
+                .thenReturn(Optional.empty());
+
+        Person person = personService.getPerson(1L);
+
+        assertThat(person).isNull();
+    }
+
+    @Test
+    void put(){
+        PersonDto dto = PersonDto.of("kyu", "programming", "판교", LocalDate.now(), "programmer", "010-1111-2222");
+
+        personService.put(dto);
+
+        verify(personRepository, times(1)).save(any(Person.class));
     }
 }
