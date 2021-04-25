@@ -75,7 +75,7 @@ class PersonControllerTest {
                 .andExpect(jsonPath("$.hobby").isEmpty())
                 .andExpect(jsonPath("$.address").isEmpty())
 //                .andExpect(jsonPath("$.birthday.yearOfBirthday").value("1991"))
-                .andExpect(jsonPath("$.birthday").value("1991-08-15")) // serialization
+                .andExpect(jsonPath("$.birthday").value("1991-04-26")) // serialization
                 .andExpect(jsonPath("$.job").isEmpty())
                 .andExpect(jsonPath("$.phoneNumber").isEmpty())
                 .andExpect(jsonPath("$.age").isNumber())

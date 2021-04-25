@@ -43,7 +43,7 @@ public class PersonService {
     - API 를 호출하는 날자 기준  오늘, 내일이 생일인 사람들의 목록을 반환한다
     - API 를 호출할 때 PathVariable 이나 Pageable 등의 활용은 필수 사항이 아닙니다.
      */
-    public List<Person> getBdaypeople() {
+    public List<Person> getPeopleBirthdayTomorrow() {
         LocalDate tomorrow = LocalDate.now().plusDays(1);
 
         return personRepository.findPeopleBirthdayTomorrow(tomorrow.getMonthValue(), tomorrow.getDayOfMonth());

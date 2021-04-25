@@ -85,7 +85,7 @@ class PersonServiceTest {
         when(personRepository.findPeopleBirthdayTomorrow(4, 26))
                 .thenReturn(Lists.newArrayList(new Person("kyu")));
 
-        List<Person> result = personService.getBdaypeople();
+        List<Person> result = personService.getPeopleBirthdayTomorrow();
 
         assertThat(result.size()).isEqualTo(1);
         assertThat(result.get(0).getName()).isEqualTo("kyu");

@@ -33,7 +33,7 @@ public class PersonController {
     }
     @GetMapping("/birthday-friends")
     public List<Person> getBdayPerson(){
-        return personService.getBdaypeople();
+        return personService.getPeopleBirthdayTomorrow();
     }
 
     @PostMapping
