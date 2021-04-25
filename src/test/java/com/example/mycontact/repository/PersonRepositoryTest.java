@@ -2,6 +2,7 @@ package com.example.mycontact.repository;
 
 import com.example.mycontact.domain.Person;
 import com.example.mycontact.domain.dto.Birthday;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -12,6 +13,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
+@Slf4j
 @SpringBootTest
 class PersonRepositoryTest {
 
@@ -54,6 +56,14 @@ class PersonRepositoryTest {
                 () -> assertThat(people.get(0).getName()).isEqualTo("david"),
                 () -> assertThat(people.get(1).getName()).isEqualTo("tony")
         );
+    }
+
+    @Test
+    void findPeopleBirthdayTomorrow(){
+        List<Person> people = personRepository.findPeopleBirthdayTomorrow(4, 26);
+
+        assertThat(people.size()).isEqualTo(1);
+        assertThat(people.get(0).getName()).isEqualTo("kyu");
     }
 
     @Test

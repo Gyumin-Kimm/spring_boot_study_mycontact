@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RequestMapping(value = "/api/person")
 @RestController
@@ -29,6 +30,10 @@ public class PersonController {
     @GetMapping("/{id}")
     public Person getPerson(@PathVariable Long id) {
         return personService.getPerson(id);
+    }
+    @GetMapping("/birthday-friends")
+    public List<Person> getBdayPerson(){
+        return personService.getBdaypeople();
     }
 
     @PostMapping

@@ -84,6 +84,14 @@ class PersonControllerTest {
     }
 
     @Test
+    void getBDayPeople() throws Exception{
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/api/person/birthday-friends"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].name").value("kyu"));
+    }
+
+    @Test
     @Transactional
     void postPerson() throws Exception {
         PersonDto dto = PersonDto.of("kyu", "programming", "판교", LocalDate.now(), "programmer", "010-1111-2222");

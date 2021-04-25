@@ -23,4 +23,7 @@ public interface PersonRepository extends JpaRepository<Person, Long> {
     // nativeQuery를 사용 안하면 Person에 @Where 조건(deleted=false) 이 포함됨
     @Query(value = "select * from Person person where person.deleted = true", nativeQuery = true)
     List<Person> findPeopleDeleted();
+
+    @Query(value = "select person from Person person where person.birthday.monthOfBirthday = :monthOfBirthday and person.birthday.dayOfBirthday = :dayOfBirthday")
+    List<Person> findPeopleBirthdayTomorrow(int monthOfBirthday, int dayOfBirthday);
 }
